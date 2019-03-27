@@ -1,40 +1,23 @@
-import admin from 'firebase-admin';
-import { firebaseConfig } from './settings';
+import admin from 'firebase';
 
-const valid = firebaseConfig && firebaseConfig.apiKey && firebaseConfig.projectId;
-const firebaseApp = valid && admin.initializeApp(firebaseConfig);
+const firebaseApp = admin.initializeApp({
+    apiKey: 'AIzaSyDxb_xWfGI1IyBgSSn-i5ND6CTahJOlHi0',
+    projectId: 'private-class-9c935',
+    databaseURL: "https://private-class-9c935.firebaseio.com",
+    storageBucket: 'gs://private-class-9c935.appspot.com/'
+});
 
 class FirebaseHelper {
-  isValid = valid;
 
   constructor() {
-    this.database = this.isValid && firebaseApp.firestore();
-    if (this.database) {
-      const settings = { timestampsInSnapshots: true };
-      this.database.settings(settings);
-    }
+    this.database = firebaseApp.firestore();
+    this.storage = firebaseApp.storage();
   }
 
-  isAuthenticated() {
-    firebaseAuth().onAuthStateChanged(user => {
-      return user ? true : false;
-    });
-  }
-  
-  createNewRef() {
-    return firebase
-      .database()
-      .ref()
-      .push().key;
-  }
-  
   processFireStoreCollection(snapshot) {
-    let data = {};
+    let data = [];
     snapshot.forEach(doc => {
-      data = {
-        ...data,
-        [doc.id]: doc.data(),
-      };
+      data.push({...doc.data(), id: doc.id});
     });
     return data;
   }

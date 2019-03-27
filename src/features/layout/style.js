@@ -1,8 +1,11 @@
 const styles = theme => ({
     root: {
-      width: '100%',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'row'
+    },
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1,
+      boxShadow: 'none'
     },
     user:{
       display:"flex"
