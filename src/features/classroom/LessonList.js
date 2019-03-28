@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import API from '../../api';
-import { Drawer, ListItem, ListItemText, List, withStyles } from '@material-ui/core';
+import { Drawer, ListItem, ListItemText, List, withStyles, Typography } from '@material-ui/core';
 import styles from './style';
 
 class LessonList extends Component {
@@ -13,7 +13,10 @@ class LessonList extends Component {
     }
 
     componentDidMount() {
-        API.getLessons(lessons => this.setState({lessons}));
+        API.getLessons(lessons => {
+            this.props.selectLesson(lessons[0]);
+            this.setState({ lessons })
+        });
     }
 
     render() {
@@ -25,15 +28,14 @@ class LessonList extends Component {
                 classes={{
                     paper: classes.drawerPaper,
                 }}>
-                <div className={classes.toolbar} />
-                <List style={{marginTop: "60px"}}>
+                <List className={classes.list}>
                     {this.state.lessons.map((c, i) => {
                         return (
-                            <ListItem button key={i} onClick={() => { this.props.selectLesson(c) }}>
-                                <ListItemText primary={c.title} />
+                            <ListItem className={classes.item} classes={{ selected: classes.itemSelected }} button key={i} onClick={() => { this.props.selectLesson(c) }}>
+                                <div className={classes.itemText}>{c.title}</div>
                             </ListItem>
                         );
-                        })}
+                    })}
                 </List>
             </Drawer>
         );

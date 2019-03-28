@@ -25,13 +25,13 @@ class PDFViewer extends Component {
     renderPages() {
         let pages = [];
         for (let index = 1; index <= this.state.numPages; index++)
-            pages.push(<Page style={{width: 'calc(100% - 200px)'}} key={index} pageNumber={index} />);
+            pages.push(<Page style={{ width: 'calc(100% - 200px)' }} key={index} pageNumber={index} />);
         return pages;
     }
 
     render() {
         return (
-            <div>
+            <div style={{ margin: "0 auto" }}>
                 <Document file={this.props.file} onLoadSuccess={this.onLoadSuccess}>
                     {this.renderPages()}
                 </Document>
