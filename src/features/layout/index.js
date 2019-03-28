@@ -8,7 +8,7 @@ class MainLayout extends Component {
         const { classes } = this.props;
         return (
             <div className={classes.root}>
-                <AppBar position="static">
+                <AppBar className={classes.appBar} position="fixed">
                     <Toolbar className={classes.toolbar}>
                         <div className={classes.user}>
                             <Typography className={classes.avatar} variant="h6" color="inherit" noWrap>J</Typography>

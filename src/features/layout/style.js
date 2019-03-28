@@ -1,8 +1,11 @@
 const styles = theme => ({
     root: {
-      width: '100%',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'row'
+    },
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1,
+      boxShadow: 'none',
     },
     user:{
       display:"flex"
@@ -12,22 +15,24 @@ const styles = theme => ({
       [theme.breakpoints.up('sm')]: {
         display: 'block',
       },
-      backgroundColor: "#2c1596",
+      backgroundColor: "white",
       padding: "0px 10px",
-      borderRadius: "15px"
+      borderRadius: "15px",
+      color: "#470d63",
+      fontWeight: "bold"
     },
     toolbar: {
       display: 'flex',
       justifyContent: 'space-between',
-      backgroundColor: 'white'
+      backgroundColor: '#470d63',
     },
     icon:{
-      color: "#040016"
+      color: "white"
     },
     title: {
       display: 'none',
       marginLeft: "20px",
-      color: "#040016",
+      color: "white",
       [theme.breakpoints.up('sm')]: {
         display: 'block',
       },
