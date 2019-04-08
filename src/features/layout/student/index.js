@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import { AppBar, IconButton, Typography, Toolbar, withStyles } from '@material-ui/core';
 import { ExitToApp, Group, School } from '@material-ui/icons'
-import styles from './style';
+import styles from '../style';
+import api from '../../../api';
+import {Link} from 'react-router-dom';
 
-class MainLayout extends Component {
+class LayoutStudent extends Component {
+
+    logout() {
+        api.logout();
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -18,12 +25,16 @@ class MainLayout extends Component {
                         </div>
                         <div className={classes.sectionDesktop}>
                             <IconButton>
-                                <School className={classes.icon} />
+                                <Link to="/student/classroom">
+                                    <School className={classes.icon} />
+                                </Link>
                             </IconButton>
                             <IconButton>
-                                <Group className={classes.icon} />
+                                <Link to="/student/tutors">
+                                    <Group className={classes.icon} />
+                                </Link>
                             </IconButton>
-                            <IconButton>
+                            <IconButton onClick={() => { this.logout() }}>
                                 <ExitToApp className={classes.icon} />
                             </IconButton>
                         </div>
@@ -35,4 +46,4 @@ class MainLayout extends Component {
     }
 }
 
-export default withStyles(styles)(MainLayout);
+export default withStyles(styles)(LayoutStudent);

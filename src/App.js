@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
-import MainLayout from './features/layout';
-import Classroom from './features/classroom';
+import React from 'react';
+import Router from './Router';
+import {BrowserRouter} from 'react-router-dom'; 
 import './App.css';
 
-class App extends Component {
-  render() {
-    return <MainLayout main={<Classroom/>}/>
-  }
+const App = ({}) => {
+  return (
+    <BrowserRouter>
+      <Router/>
+    </BrowserRouter>
+  );
 }
 
 export default App;
