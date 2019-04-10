@@ -41,7 +41,9 @@ class LayoutAdmin extends Component {
                         </div>
                     </Toolbar>
                 </AppBar>
-                {this.props.main}
+                <div className={classes.maincomponent}>
+                    {this.props.main}
+                </div>
             </div>
         );
     }
