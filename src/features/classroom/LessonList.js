@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import API from '../../api';
-import { Drawer, ListItem, ListItemText, List, withStyles, Typography } from '@material-ui/core';
+import { Drawer, ListItem, List, withStyles } from '@material-ui/core';
 import styles from './style';
+import api from '../../api';
 
 class LessonList extends Component {
 
@@ -13,7 +13,7 @@ class LessonList extends Component {
     }
 
     componentDidMount() {
-        API.getLessons(lessons => {
+        api.getLessons().then(lessons => {
             this.props.selectLesson(lessons[0]);
             this.setState({ lessons })
         });
