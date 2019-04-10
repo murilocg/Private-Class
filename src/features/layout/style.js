@@ -42,6 +42,10 @@ const styles = theme => ({
       [theme.breakpoints.up('md')]: {
         display: 'flex',
       },
+    },
+    maincomponent:{
+      marginTop: '60px',
+      width: '100%',
     }
   });
 

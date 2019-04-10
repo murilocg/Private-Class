@@ -1,5 +1,5 @@
 import {login, isLoggedIn, getCurrentUser, logout } from './Auth';
-import {getLessons, getPDF} from './Lesson';
+import {getLessons, getPDF, getLessonsWithAvaliation, createLesson, removeLesson} from './Lesson';
 
 
 export default {
@@ -8,5 +8,8 @@ export default {
     login,
     isLoggedIn,
     getCurrentUser,
-    logout
+    logout,
+    getLessonsWithAvaliation,
+    createLesson,
+    removeLesson
 }

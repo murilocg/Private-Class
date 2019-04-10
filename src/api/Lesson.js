@@ -1,21 +1,72 @@
 import FirebaseHelper from './FirebaseHelper';
-import Auth from './Auth';
 
 const collectionClass = FirebaseHelper.database.collection('Class');
+const collectionAvaliation = FirebaseHelper.database.collection('Avaliation');
 
-export const getLessons = async (callback) => {
-    try {
-        collectionClass.get().then(s => {
-            const data = FirebaseHelper.processFireStoreCollection(s);
-            callback(data ? data : []);
-        });
-    } catch (e) {
-        console.log(e);
-        callback([]);
-    };
+export const getLessons = async () => {
+    const data = FirebaseHelper.processFireStoreCollection(await collectionClass.get());
+    return data ? data : [];
 }
 
-export const getPDF = async (name, callback) => {
+export const getAvaliations = async () => {
+    const data = FirebaseHelper.processFireStoreCollection(await collectionAvaliation.get());
+    let avaliations = {};
+    data.forEach(a => {
+        let avaliation = avaliations[a.lesson];
+        if (!avaliation) avaliation = { sum: 0, count: 0 };
+        avaliation.sum = avaliation.sum + a.value;
+        avaliation.count = avaliation.count + 1;
+        avaliations[a.lesson] = avaliation;
+    });
+    Object.keys(avaliations).forEach(k => {
+        let a = avaliations[k];
+        avaliations[k] = a.sum / (a.count * 5);
+    });
+    return avaliations;
+}
+
+export const getLessonsWithAvaliation = async () => {
+    const values = await Promise.all([getLessons(), getAvaliations()]);
+    const lessons = values[0];
+    const avaliations = values[1];
+    lessons.forEach(lesson => lesson.avaliation = avaliations[lesson.id]);
+    return lessons;
+}
+
+export const createLesson = async (lesson) => {
+    const promiseFile = uploadFile(lesson.material, lesson.file);
+    const promiseLesson = collectionClass.add({
+        title: lesson.title,
+        video: lesson.video,
+        pdfName: lesson.material
+    });
+    const values = await Promise.all([promiseFile, promiseLesson]);
+    return values[0] && values[1] ? true : false;
+}
+
+export const removeLesson = async (lesson) => {
+    await collectionClass.doc(lesson.id).delete();
+    await removeFile(lesson.pdfName);
+    return true;
+}
+
+const removeFile = async (name) => {
+    await FirebaseHelper.storage.ref('/' + name).delete();
+    return true;
+}
+
+const uploadFile = async (name, file) => {
+    return new Promise(resolve => {
+        const uploader = FirebaseHelper.storage.ref('/' + name).put(file);
+        uploader.on('state_changed', () => { }, () => {
+            resolve(undefined);
+        }, () => {
+            resolve(uploader.snapshot.ref.name);
+        });
+    });
+}
+
+export const getPDF = async (name) => {
     return new Promise((resolve, reject) => {
         try {
             FirebaseHelper.storage.ref(name).getDownloadURL().then(url => {
