@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import styles from './styles';
-import { Button, withStyles, Input, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
+import { Button, withStyles, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
+import Files from 'react-files';
 
 class FormLesson extends Component {
 
@@ -9,7 +9,8 @@ class FormLesson extends Component {
         this.state = {
             lesson: {
 
-            }
+            },
+            open: true
         }
         this.handleClose = this.handleClose.bind(this);
         this.onChangeTitle = this.onChangeTitle.bind(this);
@@ -41,13 +42,13 @@ class FormLesson extends Component {
         this.setState({ lesson })
     }
 
-    onChangeFile(e) {
-        let lesson = { ...this.state.lesson, file: e.target.files[0] };
+    onChangeFile(files) {
+        let lesson = { ...this.state.lesson, file: files[0] };
         this.setState({ lesson });
     }
 
     save() {
-        this.setState({ open: false });
+        this.setState({ open: false, lesson: {} });
         this.props.save(this.state.lesson);
     }
 
@@ -56,30 +57,65 @@ class FormLesson extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({ open: props.open, lesson: props.lesson });
+        this.setState({ open: props.open });
     }
 
     render() {
-        const { classes, open } = this.props;
+        const { classes } = this.props;
         return (
             <Dialog
-                open={open}
-                onClose={this.handleClose}
-                aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">New Lesson</DialogTitle>
-                <DialogContent>
-                    <TextField label="Title" onChange={this.onChangeTitle} fullWidth />
-                    <TextField label="Video" onChange={this.onChangeVideo} fullWidth />
-                    <TextField label="Material" onChange={this.onChangeMaterial} fullWidth />
-                    <input type="file" onChange={this.onChangeFile} />
+                open={this.state.open}
+                onClose={this.handleClose}>
+                <DialogTitle>New Lesson</DialogTitle>
+                <DialogContent className={classes.modallesson}>
+                    <TextField className={classes.input} label="Title" onChange={this.onChangeTitle} fullWidth />
+                    <TextField className={classes.input} label="Video" onChange={this.onChangeVideo} fullWidth />
+                    <TextField className={classes.input} label="Material" onChange={this.onChangeMaterial} fullWidth />
+                    <Files
+                        className={classes.inputfile}
+                        onChange={this.onChangeFile}
+                        accepts={['.pdf']}
+                        maxFiles={1}
+                        minFileSize={0}
+                        clickable
+                    >
+                    Select a PDF
+                    </Files>
+                    {this.state.lesson &&  this.state.lesson.file && <label>{this.state.lesson.file.name}</label>}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.cancel} color="primary">Cancel</Button>
-                    <Button onClick={this.save} color="primary">Save</Button>
+                    <Button className={classes.confirmbtn} variant="contained" onClick={this.save} >Save</Button>
                 </DialogActions>
             </Dialog>
         );
     }
 }
+
+const styles = theme => ({
+    modallesson: {
+        width: 300,
+    },
+    input: {
+        paddingTop: 10,
+    },
+    inputfile: {
+        color: '#777777',
+        background: '#f2f2f2',
+        width: '150px',
+        marginTop: '10px',
+        padding: '5px',
+        borderRadius: '10px',
+        border: '1px solid #CECECE',
+        fontWeight: 'bold',
+        cursor: 'pointer',
+        textAlign: 'center'
+    },
+    confirmbtn: {
+        background: '#470d63',
+        color: 'white',
+        fontWeight: 'bold',
+    }
+});
 
 export default withStyles(styles)(FormLesson);

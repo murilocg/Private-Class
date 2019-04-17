@@ -23,7 +23,7 @@ class LessonsTable extends Component {
                         <TableCell className={classes.titlecolumn}>Video</TableCell>
                         <TableCell className={classes.titlecolumn}>Material</TableCell>
                         <TableCell className={classes.titlecolumn} style={{ textAlign: 'center' }}>Satisfaction</TableCell>
-                        <TableCell className={classes.titlecolumn} style={{ textAlign: 'center' }}>Options</TableCell>
+                        <TableCell className={classes.titlecolumn} style={{ textAlign: 'center', width: '100px' }}>Options</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -36,7 +36,7 @@ class LessonsTable extends Component {
                                     <TableCell>{l.pdfName}</TableCell>
                                     <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>{formattAvaliation(l.avaliation)}</TableCell>
                                     <TableCell>
-                                        <IconButton>
+                                        <IconButton disabled>
                                             <Create style={{ color: '#4a4a86' }} />
                                         </IconButton>
                                         <IconButton onClick={() => this.props.onRemove(l)}>

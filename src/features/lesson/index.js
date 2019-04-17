@@ -14,7 +14,7 @@ class LessonManager extends Component {
         super(props);
         this.state = {
             lessons: [],
-            modal: false
+            modal: 0,
         }
     }
 
@@ -26,16 +26,16 @@ class LessonManager extends Component {
         this.getLessons();
     }
 
-    openLesson(lesson) {
-        this.setState({ modal: true, lesson });
+    openLesson() {
+        this.setState({ modal: 1 });
     }
 
     openConfirmRemove(lesson) {
-        this.setState({ confirm: true, lesson });
+        this.setState({ modal: 2, lesson });
     }
 
     async remove() {
-        this.setState({confirm: false});
+        this.setState({ modal: 0 });
         const removed = await api.removeLesson(this.state.lesson);
         if (removed) {
             swal('Deleted!', 'Lesson deleted with success', 'success');
@@ -47,7 +47,7 @@ class LessonManager extends Component {
 
     async save(l) {
         const lesson = await api.createLesson(l);
-        this.setState({ modal: false });
+        this.setState({ modal: 0 });
         if (lesson) {
             swal('Created!', 'Lesson created with success', 'success');
         } else {
@@ -58,20 +58,21 @@ class LessonManager extends Component {
 
     render() {
         const { classes } = this.props;
+        console.log(this.state.modal);
         return (
             <div className={classes.managelessons}>
                 <div className={classes.boxaddlesson}>
                     <div className={classes.title}>Manage Lessons</div>
-                    <Button className={classes.addlesson} variant="contained" onClick={() => this.openLesson(this.state.lesson)}><Add />Novo</Button>
+                    <Button className={classes.addlesson} variant="contained" onClick={() => this.openLesson()}><Add />Novo</Button>
                 </div>
                 <LessonsTable lessons={this.state.lessons} onRemove={(lesson) => { this.openConfirmRemove(lesson) }} />
-                <FormLesson open={this.state.modal} save={(l) => this.save(l)} />
-                <ConfirmDialog
-                    open={this.state.confirm}
-                    title="Confirmação"
-                    text="Tem certeza que deseja remove?"
+                {this.state.modal === 1 && <FormLesson open={true} save={(l) => this.save(l)} />}
+                {this.state.modal === 2 && <ConfirmDialog
+                    open={true}
+                    title=""
+                    text="Are you sure you want to remove this item?"
                     clickYes={() => { this.remove() }}
-                    clickNo={() => { this.setState({ confirm: false }) }} />
+                    clickNo={() => { this.setState({ modal: 0 }) }} />}
             </div>
         );
     }
