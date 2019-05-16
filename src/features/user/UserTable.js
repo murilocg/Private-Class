@@ -11,32 +11,30 @@ import {
 import { Create, Delete } from '@material-ui/icons';
 import styles from './styles';
 
-class LessonsTable extends Component {
+class UserTable extends Component {
 
     render() {
-        const { classes, lessons } = this.props;
+        const { classes, users } = this.props;
         return (
-            <Table className={classes.tablelessons}>
+            <Table className={classes.tableusers}>
                 <TableHead className={classes.tablehead}>
                     <TableRow>
-                        <TableCell className={classes.titlecolumn}>Title</TableCell>
-                        <TableCell className={classes.titlecolumn}>Video</TableCell>
-                        <TableCell className={classes.titlecolumn}>Material</TableCell>
-                        <TableCell className={classes.titlecolumn} style={{ textAlign: 'center' }}>Satisfaction</TableCell>
+                        <TableCell className={classes.titlecolumn}>Name</TableCell>
+                        <TableCell className={classes.titlecolumn}>Email</TableCell>
+                        <TableCell className={classes.titlecolumn}>Type</TableCell>
                         <TableCell className={classes.titlecolumn} style={{ textAlign: 'center', width: '100px' }}>Options</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {
-                        lessons.map((l, i) => {
+                        users.map((l, i) => {
                             return (
                                 <TableRow key={i}>
-                                    <TableCell>{l.title}</TableCell>
-                                    <TableCell>{l.video}</TableCell>
-                                    <TableCell>{l.pdfName}</TableCell>
-                                    <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>{formattAvaliation(l.avaliation)}</TableCell>
+                                    <TableCell>{l.name}</TableCell>
+                                    <TableCell>{l.email}</TableCell>
+                                    <TableCell>{l.type}</TableCell>
                                     <TableCell>
-                                        <IconButton disabled>
+                                        <IconButton onClick={() => this.props.onEdit(l)}>
                                             <Create style={{ color: '#4a4a86' }} />
                                         </IconButton>
                                         <IconButton onClick={() => this.props.onRemove(l)}>
@@ -58,4 +56,4 @@ const formattAvaliation = (avaliation) => {
     return avaliation.toFixed(0) + '%';
 }
 
-export default withStyles(styles)(LessonsTable);
+export default withStyles(styles)(UserTable);

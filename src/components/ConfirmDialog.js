@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 class ConfirmDialog extends React.Component {
     state = {
-        open: false,
+        open: true,
     };
 
     componentWillReceiveProps(props) {
@@ -19,12 +19,10 @@ class ConfirmDialog extends React.Component {
         return (
             <Dialog
                 open={this.state.open}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{this.props.title}</DialogTitle>
+                <DialogTitle>{this.props.title}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
+                    <DialogContentText>
                         {this.props.text}
                     </DialogContentText>
                 </DialogContent>
