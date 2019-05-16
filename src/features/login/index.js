@@ -42,9 +42,13 @@ class Login extends Component {
             this.setState({ error, msg });
             return;
         }
-        api.login(this.state.username, this.state.password).then((loggedIn) => {
-            if (!loggedIn) {
+        api.login(this.state.username, this.state.password).then((user) => {
+            if (!user) {
                 this.setState({ error: true, msg: 'User or password invalid' });    
+            }else if(user.type === 'admin'){
+                window.location.replace('/admin/lessons');
+            }else{
+                window.location.replace('/student/classroom');
             }
         });
     }
