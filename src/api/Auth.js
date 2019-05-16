@@ -1,76 +1,58 @@
 import FirebaseHelper from './FirebaseHelper';
-import jwt_decode from 'jwt-decode';
-import history from '../components/history';
-
-FirebaseHelper.auth.onIdTokenChanged(async (payload) => {
-    if (!payload) return;
-
-    const decode = persistAuth(payload);
-    const user = await getUserById(decode['user_id']);
-    // if (user.type === 'admin') {
-    //     window.location = '/admin/lessons';
-    // } else {
-    //     window.location = '/student/classroom';
-    // }
-});
 
 const clearAuth = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('expires_at');
-    localStorage.removeItem('user_id');
+    localStorage.removeItem('id');
     localStorage.removeItem('email');
+    localStorage.removeItem('name');
+    localStorage.removeItem('type');
 }
 
-const persistAuth = (payload) => {
-    const decode = jwt_decode(payload.ra);
-    const expires = JSON.stringify(new Date(decode.exp * 1000).getTime());
-    localStorage.setItem('token', payload.ra);
-    localStorage.setItem('expires_at', expires);
-    localStorage.setItem('user_id', decode['user_id']);
-    localStorage.setItem('email', decode.email);
-    return decode;
+const persistAuth = (user) => {
+    localStorage.setItem('id', user.id);
+    localStorage.setItem('email', user.email);
+    localStorage.setItem('name', user.name);
+    localStorage.setItem('type', user.type);
 }
 
 const Users = FirebaseHelper.database.collection('user');
 
 export const login = async (email, password) => {
-    return new Promise((resolve) => {
-        FirebaseHelper.login(email, password).then((auth) => {
-            const decode = persistAuth(auth.user);
-            getUserById(decode['user_id']).then(user => {
-                if (user.type === 'admin') {
-                    window.location = '/admin/lessons';
-                } else {
-                    window.location = '/student/classroom';
-                }
-            })
-        }).catch(e => {
-            resolve(false);
-        });
-    });
+    const user = await getUser(email, password);
+    if(user) {
+        persistAuth(user);
+        return user;
+    }else{
+        return undefined;
+    }   
 }
 
 export const isLoggedIn = () => {
-    if (!localStorage.getItem('token')) return false;
-    const expires = new Date(parseInt(localStorage.getItem('expires_at')));
-    return new Date() < expires;
+    if (!localStorage.getItem('id')) return false;
+    if (!localStorage.getItem('name')) return false;
+    if (!localStorage.getItem('email')) return false;
+    if (!localStorage.getItem('type')) return false;
+    return true;
 }
 
 export const getCurrentUser = async () => {
-    const id = localStorage.getItem('user_id');
+    const id = localStorage.getItem('id');
     if (!id) return;
-    return await getUserById(id);
+    return {
+        id: Number(localStorage.getItem('id')),
+        name: localStorage.getItem('name'),
+        email: localStorage.getItem('email'),
+        type: localStorage.getItem('type')
+    };
 }
 
 export const logout = () => {
-    FirebaseHelper.logout();
     clearAuth();
-    window.location = '/';
+    window.location.replace('/');
 }
 
-const getUserById = async (id) => {
+const getUser= async (email, password) => {
     return new Promise((resolve) => {
-        Users.where('id', '==', id).limit(1).onSnapshot(s => {
+        Users.where('email', '==', email).where('password', '==', password).limit(1).onSnapshot(s => {
             const data = FirebaseHelper.processFireStoreCollection(s);
             if (!data || data.length === 0) resolve(undefined);
             const user = data[0];

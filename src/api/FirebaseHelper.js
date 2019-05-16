@@ -1,5 +1,4 @@
 import admin from 'firebase';
-import jwt_decode from 'jwt-decode';
 
 const firebaseApp = admin.initializeApp({
   apiKey: 'AIzaSyDxb_xWfGI1IyBgSSn-i5ND6CTahJOlHi0',

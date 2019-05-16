@@ -6,6 +6,7 @@ import api from './api';
 import Login from './features/login';
 import Classroom from './features/classroom';
 import LessonManager from './features/lesson';
+import UserManager from './features/user';
 
 class Router extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ class Router extends Component {
             <Switch>
                 <Route exact path="/" render={() => <Login />} />
                 <Route path="/admin/lessons" render={() => isAdmin(<LessonManager/>, user)} />
-                <Route path="/admin/users" render={() => isAdmin(<div />, user)} />
+                <Route path="/admin/users" render={() => isAdmin(<UserManager />, user)} />
                 <Route path="/student/classroom" render={() => isStudent(<Classroom />, user)} />
                 <Route path="/student/tutors" render={() => isStudent(<div />, user)} />
             </Switch>
