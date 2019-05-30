@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LessonList from './LessonList';
 import Lesson from './Lesson';
-import { withStyles, CircularProgress } from '@material-ui/core';
+import { withStyles, CircularProgress, Button } from '@material-ui/core';
 import styles from './style';
 import api from '../../api';
 
@@ -18,9 +18,8 @@ class Classroom extends Component {
 
     async selectLesson(lesson) {
         this.setState({ loading: true });
-        api.getPDF(lesson.pdfName).then(file => {
-            this.setState({ lesson, file, loading: false });
-        });
+        const file = await api.getPDF(lesson.pdfName);
+        this.setState({ lesson, file, loading: false });
     }
 
     renderLesson() {

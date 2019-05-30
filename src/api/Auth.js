@@ -38,7 +38,7 @@ export const getCurrentUser = async () => {
     const id = localStorage.getItem('id');
     if (!id) return;
     return {
-        id: Number(localStorage.getItem('id')),
+        id: localStorage.getItem('id'),
         name: localStorage.getItem('name'),
         email: localStorage.getItem('email'),
         type: localStorage.getItem('type')

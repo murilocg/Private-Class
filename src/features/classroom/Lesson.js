@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { withStyles, Typography, Tabs, Tab } from '@material-ui/core';
+import { withStyles, Typography, Tabs, Tab, Button } from '@material-ui/core';
 import styles from './style';
 import PDFViewer from '../../components/PDFViewer';
 import Comments from '../../components/Comments';
+import Avaliation from './Avaliation';
 
 class Lesson extends Component {
     constructor(props){
@@ -33,6 +34,7 @@ class Lesson extends Component {
                         textColor="primary">
                         <Tab label="Material" />
                         <Tab label="Comments" />
+                        <Avaliation lesson={this.props.lesson}/> 
                     </Tabs>
                     {
                         this.state.value === 0 && (<div style={{padding: '20px', display: 'flex', flexDirection: 'column'}}>

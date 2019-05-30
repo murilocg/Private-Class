@@ -8,6 +8,15 @@ export const getLessons = async () => {
     return data ? data : [];
 }
 
+export const getAvaliation = async (lessonId, userId) => {
+    return new Promise((resolve) => {
+        collectionAvaliation.where('lesson', '==', lessonId).where('user', '==', userId).onSnapshot(s => {
+            const data = FirebaseHelper.processFireStoreCollection(s);
+            resolve(data ? data[0] : undefined);
+        });
+    });
+}
+
 export const getAvaliations = async () => {
     const data = FirebaseHelper.processFireStoreCollection(await collectionAvaliation.get());
     let avaliations = {};
@@ -47,6 +56,17 @@ export const createLesson = async (lesson) => {
 export const removeLesson = async (lesson) => {
     await collectionClass.doc(lesson.id).delete();
     await removeFile(lesson.pdfName);
+    return true;
+}
+
+export const saveAvaliation = async (avaliation, value, lesson, user) => {
+    if(avaliation){
+        await collectionAvaliation.doc(avaliation).set({
+            lesson, value, user
+        })
+    }else{
+        await collectionAvaliation.add({ lesson, user, value});
+    }
     return true;
 }
 
