@@ -21,7 +21,7 @@ class DialogAvaliation extends Component {
     }
 
     async loadAvaliation(){
-        const user = await api.getCurrentUser();
+        const user = api.getCurrentUser();
         const avaliation = await api.getAvaliation(this.props.lesson.id, user.id);
         if(avaliation){
             this.setState({avaliation: avaliation.id, valor: avaliation.value});
@@ -29,10 +29,10 @@ class DialogAvaliation extends Component {
     }
 
     async save() {
-        const user = await api.getCurrentUser();
+        const user = api.getCurrentUser();
         const saved = await api.saveAvaliation(this.state.avaliation, this.state.valor, this.props.lesson.id, user.id);
         if (saved) {
-            swal('Done!', 'The avaliation was successful', 'success');
+            swal('Done!', 'The assessment was successful', 'success');
         } else {
             swal('Ops!', 'Sorry, something went wrong', 'error');
         }
@@ -63,7 +63,7 @@ class DialogAvaliation extends Component {
         console.log(this.props.lesson);
         return (
             <Dialog open={true}>
-                <DialogTitle style={{textAlign: 'center'}}>Avaliation</DialogTitle>
+                <DialogTitle style={{textAlign: 'center'}}>Assessment</DialogTitle>
                 <DialogContent className={classes.modalavaliation}>
                     {
                         this.renderSelectedStars(classes.selectedStar)

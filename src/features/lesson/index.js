@@ -63,7 +63,7 @@ class LessonManager extends Component {
             <div className={classes.managelessons}>
                 <div className={classes.boxaddlesson}>
                     <div className={classes.title}>Manage Lessons</div>
-                    <Button className={classes.addlesson} variant="contained" onClick={() => this.openLesson()}><Add />Novo</Button>
+                    <Button className={classes.addlesson} variant="contained" onClick={() => this.openLesson()}><Add />New</Button>
                 </div>
                 <LessonsTable lessons={this.state.lessons} onRemove={(lesson) => { this.openConfirmRemove(lesson) }} />
                 {this.state.modal === 1 && <FormLesson open={true} save={(l) => this.save(l)} />}

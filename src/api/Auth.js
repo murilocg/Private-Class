@@ -34,7 +34,7 @@ export const isLoggedIn = () => {
     return true;
 }
 
-export const getCurrentUser = async () => {
+export const getCurrentUser = () => {
     const id = localStorage.getItem('id');
     if (!id) return;
     return {
