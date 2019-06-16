@@ -18,9 +18,8 @@ class Router extends Component {
     }
 
     componentDidMount() {
-        api.getCurrentUser().then((user) => {
-            this.setState({ user });
-        });
+        const user = api.getCurrentUser();
+        this.setState({ user });
     }
 
     render() {

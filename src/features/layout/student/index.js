@@ -11,6 +11,16 @@ class LayoutStudent extends Component {
         api.logout();
     }
 
+    getFirstLetter(){
+        const user = api.getCurrentUser();
+        return user.name.substr(0,1).toUpperCase();
+    }
+
+    getUserName(){
+        const user = api.getCurrentUser();
+        return user.name;
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -18,9 +28,9 @@ class LayoutStudent extends Component {
                 <AppBar className={classes.appBar} position="fixed">
                     <Toolbar className={classes.toolbar}>
                         <div className={classes.user}>
-                            <Typography className={classes.avatar} variant="h6" color="inherit" noWrap>J</Typography>
+                            <Typography className={classes.avatar} variant="h6" color="inherit" noWrap>{this.getFirstLetter()}</Typography>
                             <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-                                Joãozinho
+                                {this.getUserName()}
                             </Typography>
                         </div>
                         <div className={classes.sectionDesktop}>
