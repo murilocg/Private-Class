@@ -34,11 +34,11 @@ export const isLoggedIn = () => {
     return true;
 }
 
-export const getCurrentUser = async () => {
+export const getCurrentUser = () => {
     const id = localStorage.getItem('id');
     if (!id) return;
     return {
-        id: Number(localStorage.getItem('id')),
+        id: localStorage.getItem('id'),
         name: localStorage.getItem('name'),
         email: localStorage.getItem('email'),
         type: localStorage.getItem('type')

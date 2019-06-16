@@ -86,7 +86,7 @@ class UserManager extends Component {
             <div className={classes.manageusers}>
                 <div className={classes.boxadduser}>
                     <div className={classes.title}>Manage Users</div>
-                    <Button className={classes.adduser} variant="contained" onClick={() => this.openUser()}><Add />Novo</Button>
+                    <Button className={classes.adduser} variant="contained" onClick={() => this.openUser()}><Add />New</Button>
                 </div>
                 <UserTable users={this.state.users} onRemove={(user) => { this.openConfirmRemove(user) }}  onEdit={(user) => this.openEdit(user)}/>
                 {this.state.modal === 1 && <FormUser user={this.state.user} save={(u) => this.save(u)} cancel={()=>this.setState({modal:0, user: undefined})}/>}
